@@ -1,12 +1,22 @@
 import path from 'path';
+import webpack from 'webpack';
 
 export default {
   devtool: "source-map",
-  entry: path.join(__dirname, './client/index.js'),
+  entry: [
+    'webpack-hot-middleware/client?reload=true',
+    path.join(__dirname, './client/index.js'),
+  ],
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
+    path: '/',
+    publicPath: '/',
   },
+  plugins: [
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+  ],
   module: {
     rules: [
       {
@@ -14,7 +24,7 @@ export default {
         include: [
           path.join(__dirname, 'client'),
         ],
-        loader: "babel-loader",
+        loader: ["react-hot-loader", "babel-loader"],
       }
     ],
   },
